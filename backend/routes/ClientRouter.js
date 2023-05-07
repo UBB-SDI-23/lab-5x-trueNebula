@@ -1,16 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const ClientService = require('../services/ClientService');
+const pool = require('../db');
+
 
 const clientService = new ClientService();
 
 
 router.get('/clients', async (req, res) => {
     try {
-        const products = await clientService.getClients({});
-        console.log(products);
-        res.status(200).send(products);
+        pool.query('SELECT * FROM clients ORDER BY id ASC', (error, results) => {
+            if (error) {
+                throw error;
+            }
 
+            res.status(200).json(results.rows);
+
+          }
+        );
     } catch (err) {
         res.status(500).send(err);
 
@@ -21,8 +28,38 @@ router.get('/clients', async (req, res) => {
 
 router.post('/clients', async (req, res) => {
     try {
-        const savedProduct = await clientService.createClient(req.body);
-        res.status(201).send(savedProduct);
+        const {name, password, isVIP, dateJoined} = req.body;
+        console.log(req.body);
+
+        pool.query('INSERT INTO clients (name, password, isVIP, dateJoined) VALUES ($1, $2, $3, $4) RETURNING *', [name, password, isVIP, dateJoined], (error, results) => {
+            if (error) {
+                throw error;
+            }
+
+            res.status(201).send(`Client added with ID: ${results.rows[0].id}`);
+
+          });
+
+    } catch (err) {
+        res.status(500).send(err);
+
+    }
+
+});
+
+
+router.get('/clients/filter/:isVIP', async (req, res) => {
+    try {
+        const isVIP = req.params.isVIP;
+
+        pool.query('SELECT * FROM clients WHERE isVIP = $1', [isVIP], (error, results) => {
+            if (error) {
+                throw error;
+            }
+
+            res.status(200).json(results.rows);
+
+            });
 
     } catch (err) {
         res.status(500).send(err);
@@ -59,8 +96,15 @@ router.get('/clients/avgreport', async (req, res) => {
 
 router.get('/clients/:id', async (req, res) => {
     try {
-        const product = await clientService.getClientById(req.params.id);
-        res.status(200).send(product);
+        const id = parseInt(req.params.id);
+
+        pool.query('SELECT * FROM clients WHERE id = $1', [id], (error, results) => {
+            if (error) {
+                throw error;
+            }
+
+            res.status(200).json(results.rows[0])
+        });
 
     } catch (err) {
         res.status(500).send(err);
@@ -68,10 +112,22 @@ router.get('/clients/:id', async (req, res) => {
     }
 });
 
-router.patch('/clients/:id', async (req, res) => {
+router.put('/clients/:id', async (req, res) => {
     try {
-        const product = await clientService.updateClientById(req.params.id, req.body)
-        res.status(200).send(product);
+        const id = parseInt(req.params.id); 
+        const {name, password, isVIP, dateJoined} = req.body;
+
+        pool.query(
+            'UPDATE clients SET name = $1, password = $2, isVIP = $3, dateJoined = $4 WHERE id = $5',
+            [name, password, isVIP, dateJoined, id],
+            (error, results) => {
+                if (error) {
+                    throw error;
+                }
+
+                res.status(200).send(`Client modified with ID: ${id}`);
+            }
+        );
 
     } catch (err) {
         res.status(500).send(err)
@@ -83,8 +139,15 @@ router.patch('/clients/:id', async (req, res) => {
 
 router.delete('/clients/:id', async (req, res) => {
     try {
-        await clientService.deleteClientById(req.params.id);
-        res.status(204).send();
+        const id = parseInt(req.params.id);
+
+        pool.query('DELETE FROM clients WHERE id = $1', [id], (error, results) => {
+            if (error) {
+                throw error;
+            }
+
+            res.status(200).send(`Client deleted with ID: ${id}`);
+        });
 
     } catch (err) {
         res.status(500).send(err);

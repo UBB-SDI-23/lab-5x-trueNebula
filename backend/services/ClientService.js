@@ -1,21 +1,16 @@
 const ClientModel = require('../models/Client');
 const ClientDTO = require('../DTOs/ClientDTO');
+const { pool } = require('../db');
 
 class ClientService {
-    async getClients() {
-        let error;
-        try {
-            const products = await ClientModel.find();
-            return products;
-        }
-
-        catch (err) {
-            error = err;
-        }
-
-        assert.equal(error.errors['name'].message, 'Path `name` is required.');
-        error = cat.validateSync();
-        assert.equal(error.errors['name'].message, 'Path `name` is required.');
+    getClients (req, res) {
+        console.log('hello');
+        pool.query('SELECT * FROM clients ORDER BY id ASC', (error, results) => {
+          if (error) {
+            throw error
+          }
+          res.status(200).json(results.rows)
+        });
 
     }
 

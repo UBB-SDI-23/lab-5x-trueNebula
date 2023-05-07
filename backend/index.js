@@ -1,21 +1,12 @@
 const path = require('path');
 const express = require('express');
-const mongoose = require('mongoose');
-const uri = "mongodb+srv://trueNebula:aaaaa@mpplab.c1bav1a.mongodb.net/?retryWrites=true&w=majority";
-
-async function dbConnect() {
-    try{
-        await mongoose.connect(uri);
-        console.log(mongoose.connection.readyState);
-    } finally {
-        mongoose.connection.close();
-    }
-}
+const bodyParser = require('body-parser');
+const { Client } = require('pg');
 
 const app = express();
 const port = process.env.PORT || 8000;
 app.use(express.json());
-dbConnect();
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const ProductRouter = require('./routes/ProductRouter');
 const ProductListRouter = require('./routes/ProductListRouter');
@@ -30,6 +21,10 @@ app.listen(port, () => {
     console.log('Server running at on port ' + port);
 
 });
+
+app.get('/', (req, res) => {
+    res.json({ info: 'Node.js, Express, and Postgres API' })
+  })
 
 app.get('/test', (req, res) => {
     res.sendFile('./views/test.html', { root: __dirname });
