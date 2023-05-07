@@ -9,6 +9,7 @@ const clientService = new ClientService();
 
 router.get('/clients', async (req, res) => {
     try {
+        console.log('getting clients');
         pool.query('SELECT * FROM clients ORDER BY id ASC', (error, results) => {
             if (error) {
                 throw error;

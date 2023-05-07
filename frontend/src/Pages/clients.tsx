@@ -12,23 +12,28 @@ export interface Client {
     dateJoined: Date;
 }
 
+const BACKEND_URI = "http://127.0.0.1:8000/api"
+
 export default function Clients() {
     const [data, setData] = useState([])
     const [selection, setSelection] = useState<Client | undefined>({} as Client)
     const form = useRef(null)
 
     const fetchData = () => {
-        fetch(process.env.REACT_APP_API_URL + "/dlients/")
-            .then(response => response.json())
-            .then(json => { setData(json.clients) })
+        fetch("http://127.0.0.1:8000/api/clients/", {
+            method: "GET",
+            mode: "no-cors"
+        })
+            .then(response => console.log(response))
     }
 
     useEffect(() => {
         fetchData()
+        console.log(data);
     }, [])
 
     useEffect(() => {
-        console.log(selection)
+        //console.log(selection)
     }, [selection])
 
     const selectClient = (dir_sel: any) => {
@@ -41,7 +46,7 @@ export default function Clients() {
         if (selection === undefined)
             return
         console.log(selection)
-        fetch(process.env.REACT_APP_API_URL + "/clients/" + (selection!.id ? selection!.id : ""), {
+        fetch(BACKEND_URI + "/clients/" + (selection!.id ? selection!.id : ""), {
             method: selection!.id ? "PATCH" : "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -53,7 +58,7 @@ export default function Clients() {
 
     const deleteClient = (id: any) => {
         if (id) {
-            fetch(process.env.REACT_APP_API_URL + "/clients/" + id, {
+            fetch(BACKEND_URI + "/clients/" + id, {
                 method: "DELETE"
             }).then(response => console.log(response))
                 .then(() => { fetchData() })
@@ -129,16 +134,13 @@ export default function Clients() {
                     </Container>
                 </Form>
 
-
-
                 <Table hover>
                     <thead>
                         <tr>
                             <th onClick={handleSort}>Name</th>
-                            <th>Age</th>
-                            <th>Birth Date</th>
-                            <th>Death Date</th>
-                            <th>Nationality</th>
+                            <th>Password</th>
+                            <th>Is VIP?</th>
+                            <th>Join Date</th>
                             <th></th>
                         </tr>
                     </thead>
