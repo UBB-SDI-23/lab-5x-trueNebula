@@ -1,12 +1,14 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { Client } = require('pg');
 
 const app = express();
 const port = process.env.PORT || 8000;
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 const ProductRouter = require('./routes/ProductRouter');
 const ProductListRouter = require('./routes/ProductListRouter');

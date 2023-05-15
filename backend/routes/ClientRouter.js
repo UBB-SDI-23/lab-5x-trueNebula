@@ -3,7 +3,6 @@ const router = express.Router();
 const ClientService = require('../services/ClientService');
 const pool = require('../db');
 
-
 const clientService = new ClientService();
 
 
@@ -29,10 +28,13 @@ router.get('/clients', async (req, res) => {
 
 router.post('/clients', async (req, res) => {
     try {
-        const {name, password, isVIP, dateJoined} = req.body;
+        const {name, password, isvip, datejoined} = req.body;
         console.log(req.body);
 
-        pool.query('INSERT INTO clients (name, password, isVIP, dateJoined) VALUES ($1, $2, $3, $4) RETURNING *', [name, password, isVIP, dateJoined], (error, results) => {
+        const vip = isvip === "true" ? true : false;
+        console.log(isvip);
+
+        pool.query('INSERT INTO clients (name, password, isVIP, dateJoined) VALUES ($1, $2, $3, $4) RETURNING *', [name, password, isvip, datejoined], (error, results) => {
             if (error) {
                 throw error;
             }
@@ -116,11 +118,11 @@ router.get('/clients/:id', async (req, res) => {
 router.put('/clients/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id); 
-        const {name, password, isVIP, dateJoined} = req.body;
+        const {name, password, isvip, datejoined} = req.body;
 
         pool.query(
             'UPDATE clients SET name = $1, password = $2, isVIP = $3, dateJoined = $4 WHERE id = $5',
-            [name, password, isVIP, dateJoined, id],
+            [name, password, isvip, datejoined, id],
             (error, results) => {
                 if (error) {
                     throw error;
