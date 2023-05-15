@@ -18,7 +18,9 @@
     "mongoose": "^7.0.3",
     "node-pg-migrate": "^6.2.2",
     "pg": "^8.10.0",
-    "postgres-date": "^2.1.0"
+    "pg-hstore": "^2.3.4",
+    "postgres-date": "^2.1.0",
+    "sequelize": "^6.31.1"
   },
   "devDependencies": {
     "jest": "^29.5.0"

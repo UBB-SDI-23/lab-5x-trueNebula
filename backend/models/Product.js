@@ -1,22 +1,27 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+module.exports = (sequelize, Sequelize) => {
+    const Product = sequelize.define("product", {
+        name: {
+            type: Sequelize.STRING
+        },
 
-const ProductSchema = new mongoose.Schema({
-    name: String,
-    price: Number,
-    description: String,
-    quantity: Number,
-    category: String,
-    list: {
-        type: Schema.Types.ObjectId,
-        ref: "ProductList"
-    },
-    purchases: [{
-        type:Schema.Types.ObjectId,
-        ref: "Purchase"
-    }]
-});
+        price: {
+            type: Sequelize.FLOAT
+        },
 
-const Product = mongoose.model('Product', ProductSchema);
+        description: {
+            type: Sequelize.STRING
+        },
 
-module.exports = Product;
+        quantity: {
+            type: Sequelize.INTEGER
+        },
+
+        category: {
+            type: Sequelize.STRING
+        }
+
+    });
+    
+    return Product;
+
+};

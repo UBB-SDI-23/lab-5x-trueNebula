@@ -1,28 +1,22 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+module.exports = (sequelize, Sequelize) => {
+    const Client = sequelize.define("client", {
+        name: {
+            type: Sequelize.STRING
+        },
 
+        password: {
+            type: Sequelize.STRING
+        },
 
-const ClientSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    isVIP: Boolean,
-    email: {
-        type: String,
-        required: true
-    },
-    dateJoined: Date,
-    purchases: [{
-        type: Schema.Types.ObjectId,
-        ref: "Purchase"
-    }]
-});
+        isvip: {
+            type: Sequelize.BOOLEAN
+        },
 
-const Client = mongoose.model('Client', ClientSchema);
+        datejoined: {
+            type: Sequelize.DATE
+        }
+    });
+    
+    return Client;
 
-module.exports = Client;
+};

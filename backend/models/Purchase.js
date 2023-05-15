@@ -1,21 +1,23 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+module.exports = (sequelize, Sequelize) => {
+    const Purchase = sequelize.define("purchase", {
+        date: {
+            type: Sequelize.DATE
+        },
 
+        received: {
+            type: Sequelize.BOOLEAN
+        },
 
-const PurchaseSchema = new mongoose.Schema({
-    date: Date,
-    received: Boolean,
-    client: {
-        type: Schema.Types.ObjectId,
-        ref: "Client"
-    },
-    product: {
-        type: Schema.Types.ObjectId,
-        ref: "Product"
-    }
+        clientId: {
+            type: Sequelize.INTEGER
+        },
+
+        productId: {
+            type: Sequelize.INTEGER
+        }
+
+    });
     
-});
+    return Purchase;
 
-const Purchase = mongoose.model('Purchase', PurchaseSchema);
-
-module.exports = Purchase;
+};

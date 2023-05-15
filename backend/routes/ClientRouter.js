@@ -1,27 +1,44 @@
 const express = require('express');
 const router = express.Router();
-const ClientService = require('../services/ClientService');
-const pool = require('../db');
-
-const clientService = new ClientService();
-
+const pool = require('../config/db');
+const db = require('../models');
+const { getPagination, getPagingData } = require('./RouterUtils.js');
+const Client = db.clients;
 
 router.get('/clients', async (req, res) => {
-    try {
-        console.log('getting clients');
-        pool.query('SELECT * FROM clients ORDER BY id ASC', (error, results) => {
-            if (error) {
-                throw error;
-            }
+    const { page, size, name } = req.query;
+    const { limit, offset } = getPagination(page, size);
 
-            res.status(200).json(results.rows);
+    const condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
 
-          }
-        );
-    } catch (err) {
-        res.status(500).send(err);
+    Client.findAndCountAll({ where: condition, limit, offset })
+        .then(data => {
+            const response = getPagingData(data, page, limit);
+            res.send(response);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving clients."
+            });
+        });
 
-    }
+
+
+    //     console.log('getting clients');
+    //     pool.query('SELECT * FROM clients ORDER BY id ASC', (error, results) => {
+    //         if (error) {
+    //             throw error;
+    //         }
+
+    //         res.status(200).json(results.rows);
+
+    //       }
+    //     );
+    // } catch (err) {
+    //     res.status(500).send(err);
+
+    // }
 
 });
 

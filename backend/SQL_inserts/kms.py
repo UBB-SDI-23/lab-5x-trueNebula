@@ -31,6 +31,33 @@ for _ in range(1000):
 clients_script.close()
 """
 
+# short clients
+clients_script = open("clients.sql", "w")
+
+names = []
+for _ in range(30):
+    names.append(fake.name())
+
+passwords = []
+for _ in range(300):
+    passwords.append(fake.password(special_chars=False))
+
+dates = []
+for _ in range(300):
+    dates.append(fake.date())
+
+for _ in range(10):
+    insert_string = "INSERT INTO clients (name, password, isvip, datejoined) VALUES "
+
+    for _ in range(30):
+        insert_string += f"('{names[random.randint(0, 9)]}', '{passwords[random.randint(0, 9)]}', {str(fake.boolean()).lower()}, '{dates[random.randint(0, 9)]}'), "
+
+    clients_script.write(insert_string[:-2] + ";\n")
+
+clients_script.close()
+
+
+
 # products
 
 """
@@ -66,6 +93,7 @@ products_script.close()
 
 # purchases
 
+"""
 purchases_script = open("purchases.sql", "w")
 
 feedbacks = []
@@ -82,3 +110,5 @@ for _ in range(10000):
     purchases_script.write(insert_string[:-2] + ";\n")
 
 purchases_script.close()
+
+"""
