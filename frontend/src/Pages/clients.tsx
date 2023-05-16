@@ -32,12 +32,11 @@ export default function Clients() {
     }
 
     useEffect(() => {
+        console.log(page)
         fetchData(1)
-        console.log(data);
     }, [])
 
     useEffect(() => {
-        console.log(selection)
     }, [selection])
 
     const selectClient = (dir_sel: any) => {

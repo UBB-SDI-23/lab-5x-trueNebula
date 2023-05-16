@@ -44,3 +44,8 @@
 .pagination > .active > a:hover {
     background-color: #727272 !Important;
 }
+
+.MuiButtonBase-root {
+    color: rgba(255, 255, 255, 0.87) !important;
+    background-color: #242424 !important;
+}
