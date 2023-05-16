@@ -3,11 +3,15 @@
     line-height: 1.5;
     font-weight: 400;
     font-size: 16px;
-  
-    color-scheme: dark;
+}
+
+body {
     color: rgba(255, 255, 255, 0.87);
     background-color: #242424;
+}
 
+td {
+    color: rgba(255, 255, 255, 0.87);
 }
 
 .white-text {
@@ -45,7 +49,7 @@
     background-color: #727272 !Important;
 }
 
-.MuiButtonBase-root {
-    color: rgba(255, 255, 255, 0.87) !important;
+/* .MuiButton-root {
+    color: white !important;
     background-color: #242424 !important;
-}
+} */

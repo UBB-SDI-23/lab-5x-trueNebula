@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider} from '@mui/material/styles';
 import { Login } from '../App';
 
 const theme = createTheme();
@@ -28,7 +28,6 @@ const SignIn : React.FC<SignInProps> = ({setLoginCallback })=> {
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -54,6 +53,7 @@ const SignIn : React.FC<SignInProps> = ({setLoginCallback })=> {
               name="email"
               autoComplete="email"
               autoFocus
+              sx={{'color':'#242424', 'backgroundColor': 'rgba(255, 255, 255, 0.87)', 'borderRadius': '6px'}}
             />
             <TextField
               margin="normal"
@@ -64,16 +64,20 @@ const SignIn : React.FC<SignInProps> = ({setLoginCallback })=> {
               type="password"
               id="password"
               autoComplete="current-password"
+              sx={{'color':'#242424', 'backgroundColor': 'rgba(255, 255, 255, 0.87)', 'borderRadius': '6px'}}
+
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="secondary" style={{color: 'rgba(255, 255, 255, 0.87)'}}/>}
               label="Remember me"
+
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2}}
+              color={'primary'}
+              sx={{ 'mt': '3', 'mb': '2', 'color':'#242424', 'backgroundColor': 'rgba(255, 255, 255, 0.87)'}}
             >
               Sign In
             </Button>
@@ -92,7 +96,6 @@ const SignIn : React.FC<SignInProps> = ({setLoginCallback })=> {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 }
 
